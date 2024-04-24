@@ -1,0 +1,35 @@
+# .gitignore
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore PhpStorm project files
+.idea/
+
+# Ignore log files
+*.log
+
+# Ignore temporary files
+*.tmp
+*.swp
+*.swo
+*.bak
+*.save
+
+# Ignore all __pycache__ directories
+__pycache__/
+
+# Ignore all .pyc, .pyo and .pyd files
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore node modules
+node_modules/
+
+# Ignore dist directory
+dist/
+
+# Ignore .env files
+.env
