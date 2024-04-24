@@ -99,24 +99,6 @@ function aws_auth() {
 
   declare -a session_tokens;
 
-  # Check for valid AWS credentials
-  local caller_identity=($(aws sts get-caller-identity --output text));
-  if ! [ "${?}" -eq 0 ]; then
-    echo "Error: current AWS credential configuration invalid." >&2;
-    return 1;
-  fi;
-
-  # Check if currently using an STS token (i.e. MFA, role assumed, or some other funkiness)
-  if [[ -n "${AWS_SESSION_TOKEN+x}" ]]; then
-    echo "Error: already using an STS token, you probably don't want to do MFA authentication at this point - perhaps run aws_reset_creds to reset" >&2;
-    return 1;
-  fi;
-
-  # save existing credentials, if present
-  [[ -n "${AWS_ACCESS_KEY_ID+x}" ]] && export AWS_PREMFA_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-  [[ -n "${AWS_SECRET_ACCESS_KEY+x}" ]] && export AWS_PREMFA_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-  [[ -n "${AWS_SESSION_TOKEN+x}" ]] && export AWS_PREMFA_SESSION_TOKEN=${AWS_SESSION_TOKEN}
-
   # Get MFA Serial
   #
   # Assumes "iam list-mfa-devices" is permitted without MFA
