@@ -99,6 +99,13 @@ function aws_auth() {
 
   declare -a session_tokens;
 
+  # Check for valid AWS credentials
+  local caller_identity=($(aws sts get-caller-identity --output text));
+  if ! [ "${?}" -eq 0 ]; then
+    echo "Error: current AWS credential configuration invalid." >&2;
+    return 1;
+  fi;
+
   # Get MFA Serial
   #
   # Assumes "iam list-mfa-devices" is permitted without MFA
